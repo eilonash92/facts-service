@@ -32,9 +32,9 @@ spec:
 }
    }
     environment {
-        DOCKER_HUB_REPO = "eilonash92/facts-service"
+        DOCKER_HUB_REPO = "eilonash92/time-service"
         USER_NAME="eilonash92"
-        APP_NAME = "facts-service"
+        APP_NAME = "time-service"
     }
   stages {
     stage('Build') {
@@ -59,6 +59,19 @@ spec:
                 sh """helm upgrade --install $APP_NAME ./helm"""
                 echo "Deployed $APP_NAME succesfully to kubernetes"
             }
+        }
+    }
+    stage('Test') {
+        steps {
+            script {
+                    def status_code = "curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000"
+                    if status_code.contains("200") {
+                        error("Test succeeded, the website is up")
+                    }
+                    else {
+                        error("Test failed, the website is down")
+                    }
+                }
         }
     }
   }
