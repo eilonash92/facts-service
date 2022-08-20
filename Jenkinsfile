@@ -18,7 +18,7 @@ spec:
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-sock
-  - name: docker
+  - name: helm
     image: lachlanevenson/k8s-helm:v3.1.1
     command:
     - cat
@@ -55,6 +55,7 @@ spec:
     }
     stage('Deploy') {
         steps {
+            container('helm') {
             sh """helm upgrade --install facts-service ./helm"""
             echo "Deployed $CONTAINER_NAME succesfully to kubernetes"
         }
