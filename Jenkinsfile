@@ -34,7 +34,7 @@ spec:
     environment {
         DOCKER_HUB_REPO = "eilonash92/facts-service"
         USER_NAME="eilonash92"
-        CONTAINER_NAME = "facts-service"
+        APP_NAME = "facts-service"
     }
   stages {
     stage('Build') {
@@ -56,8 +56,8 @@ spec:
     stage('Deploy') {
         steps {
             container('helm') {
-                sh """helm upgrade --install facts-service ./helm"""
-                echo "Deployed $CONTAINER_NAME succesfully to kubernetes"
+                sh """helm upgrade --install $APP_NAME ./helm"""
+                echo "Deployed $APP_NAME succesfully to kubernetes"
             }
         }
     }
