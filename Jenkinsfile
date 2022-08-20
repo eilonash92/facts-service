@@ -27,7 +27,11 @@ spec:
     - name: docker-sock
       hostPath:
         path: /var/run/docker.sock
-  
+  - name: curl
+    image: curlimages/curl:7.81.0
+    command:
+    - cat
+    tty: true
 """
 }
    }
@@ -63,8 +67,11 @@ spec:
     }
     stage('Test') {
         steps {
-            script {
-                    def status_code = "curl -s -o /dev/null -w %{http_code} http://127.0.0.1:5000"
+            container('curl') {
+                script {
+                    def status_code = sh "curl -s -o /dev/null -w %{http_code} http://127.0.0.1:5000"
+                    print status_code
+                    print status_code.contains("200")
                     if (status_code.contains("200")) {
                         error("Test succeeded, the website is up")
                     }
@@ -72,6 +79,7 @@ spec:
                         error("Test failed, the website is down")
                     }
                 }
+            }
         }
     }
   }
