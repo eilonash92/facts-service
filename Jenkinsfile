@@ -8,8 +8,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                def newImage = docker.build "${DOCKER_HUB_REPO}:${env.BUILD_TAG}"
-                newImage.push()
+                script {
+                    def newImage = docker.build "${DOCKER_HUB_REPO}:${env.BUILD_TAG}"
+                    newImage.push()
+                }
                 //  Building new image
                 //sh 'docker image build -t $DOCKER_HUB_REPO:latest .'
                 //sh 'docker image tag $DOCKER_HUB_REPO:latest $DOCKER_HUB_REPO:$BUILD_NUMBER'
