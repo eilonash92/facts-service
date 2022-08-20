@@ -32,9 +32,9 @@ spec:
 }
    }
     environment {
-        DOCKER_HUB_REPO = "eilonash92/time-service"
+        DOCKER_HUB_REPO = "eilonash92/facts-service"
         USER_NAME="eilonash92"
-        APP_NAME = "time-service"
+        APP_NAME = "facts-service"
     }
   stages {
     stage('Build') {
