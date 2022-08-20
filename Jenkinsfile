@@ -28,6 +28,8 @@ spec:
     command:
     - cat
     tty: true
+    securityContext:
+      runAsUser: 0
   volumes:
     - name: docker-sock
       hostPath:
