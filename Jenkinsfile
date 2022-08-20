@@ -1,7 +1,8 @@
 pipeline {
-    agent {
-        kubernetes {
-            yaml """
+  agent {
+    kubernetes {
+      defaultContainer 'jnlp'
+      yaml """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -22,38 +23,31 @@ spec:
       hostPath:
         path: /var/run/docker.sock
 """
-        }
-    }
+}
+   }
     environment {
         DOCKER_HUB_REPO = "eilonash92/facts-service"
         USER_NAME="eilonash92"
         CONTAINER_NAME = "facts-service"
     }
-    stages {
-        stage('Build') {
-            steps {
-                //  Building image
-                sh """docker build -t $DOCKER_HUB_REPO:$BUILD_NUMBER ."""
-                //  Pushing Image to Dockerhub repository
-                withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
-                    sh """docker push $DOCKER_HUB_REPO:$BUILD_NUMBER"""
-                }
-                echo "Image built and pushed to repository"
+  stages {
+    stage('Build') {
+      steps {
+        container('docker') {
+          //  Building Image
+          sh """docker build -t $DOCKER_HUB_REPO:$BUILD_NUMBER ."""
+          //  Pushing Image to Dockerhub Repository
+          echo "Image built and pushed to repository"
+          withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
+                sh """docker push $DOCKER_HUB_REPO:$BUILD_NUMBER"""
             }
         }
-        stage('Deploy') {
-            steps {
-                script{
-                    echo "Lastest code has been deployed to the web application"
-                }
-            }
-        }
-        stage('Test Application') {
-            steps {
-                script{
-                    sh "Testing application..."
-                }
-            }
+      }
+    }
+    stage('Deply') {
+        steps {
+            echo "Deplyed $CONTAINER_NAME succesfully to kubernetes"
         }
     }
+  }
 }
