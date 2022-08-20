@@ -64,7 +64,7 @@ spec:
     stage('Test') {
         steps {
             script {
-                    def status_code = "curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000"
+                    def status_code = "curl -s -o /dev/null -w %{http_code} http://127.0.0.1:5000"
                     if status_code.contains("200") {
                         error("Test succeeded, the website is up")
                     }
