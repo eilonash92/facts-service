@@ -23,15 +23,15 @@ spec:
     command:
     - cat
     tty: true
-  volumes:
-    - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
   - name: curl
     image: curlimages/curl:7.81.0
     command:
     - cat
     tty: true
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
 """
 }
    }
