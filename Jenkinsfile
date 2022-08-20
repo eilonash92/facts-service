@@ -35,18 +35,22 @@ spec:
       steps {
         container('docker') {
           //  Building Image
-          sh """docker build -t $DOCKER_HUB_REPO:$BUILD_NUMBER ."""
+          sh """docker build -t $DOCKER_HUB_REPO:$BUILD_NUMBER -t $DOCKER_HUB_REPO:latest ."""
           //  Pushing Image to Dockerhub Repository
           echo "Image built and pushed to repository"
           withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
                 sh """docker push $DOCKER_HUB_REPO:$BUILD_NUMBER"""
-            }
+          }
+          withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
+                sh """docker push $DOCKER_HUB_REPO:latest"""
+          }
         }
       }
     }
-    stage('Deply') {
+    stage('Deploy') {
         steps {
-            echo "Deplyed $CONTAINER_NAME succesfully to kubernetes"
+            sh """helm upgrade --install facts-service ./helm"""
+            echo "Deployed $CONTAINER_NAME succesfully to kubernetes"
         }
     }
   }
