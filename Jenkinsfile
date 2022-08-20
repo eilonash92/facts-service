@@ -18,15 +18,16 @@ spec:
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-sock
-  volumes:
-    - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
   - name: docker
     image: lachlanevenson/k8s-helm:v3.1.1
     command:
     - cat
     tty: true
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+  
 """
 }
    }
