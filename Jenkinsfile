@@ -69,15 +69,18 @@ spec:
         steps {
             container('curl') {
                 script {
-                    def status_code = sh "curl -s -o /dev/null -w %{http_code} http://127.0.0.1:5000"
-                    print status_code
-                    print status_code.contains("200")
-                    if (status_code.contains("200")) {
-                        error("Test succeeded, the website is up")
-                    }
-                    else {
-                        error("Test failed, the website is down")
-                    }
+                    final String url = "http://127.0.0.1:5000"
+                    final String response = sh(script: "curl -s $url", returnStdout: true).trim()
+                    echo response
+                    // def status_code = sh "curl -s -o /dev/null -w %{http_code} http://127.0.0.1:5000"
+                    // print status_code
+                    // print status_code.contains("200")
+                    // if (status_code.contains("200")) {
+                    //     error("Test succeeded, the website is up")
+                    // }
+                    // else {
+                    //     error("Test failed, the website is down")
+                    // }
                 }
             }
         }
