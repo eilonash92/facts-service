@@ -5,7 +5,7 @@ appName: facts-service
 replicaCount: 2
 
 container:
-  port: 5000
+  port: 6000
 image:
   repository: facts-service
   name: eilonash92/facts-service:latest
@@ -14,4 +14,4 @@ image:
 
 service:
   type: LoadBalancer
-  port: 5000
+  port: 6000
