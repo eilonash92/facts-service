@@ -7,4 +7,4 @@ ENV FLASK_RUN_PORT 6000
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY . .
-CMD ["flask", "run", "localhost", "-p", "3000"]
+CMD ["flask", "run", "-p", "3000"]
