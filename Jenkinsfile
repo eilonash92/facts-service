@@ -5,6 +5,9 @@ pipeline {
         USER_NAME="eilonash92"
         CONTAINER_NAME = "facts-service"
     }
+    tools {
+        dockerTool 'docker-19.03.11'
+    }
     stages {
         stage('Build') {
             steps {
