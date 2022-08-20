@@ -10,16 +10,16 @@ pipeline {
         spec:
           containers:
           - name: docker
-            image: docker:1.11
+            image: docker:latest
             command: ['cat']
             tty: true
             volumeMounts:
-                - name: dockersock
-                mountPath: /var/run/docker.sock
+             - mountPath: /var/run/docker.sock
+               name: docker-sock
             volumes:
-            - name: dockersock
+            - name: docker-sock
               hostPath:
-                path: /var/run/docker.sock
+                path: /var/run/docker.sock   
         '''
         }
     }
@@ -28,14 +28,12 @@ pipeline {
         USER_NAME="eilonash92"
         CONTAINER_NAME = "facts-service"
     }
-    tools {
-        'dockerTool' '1.12.6'
-    }
     stages {
         stage('Build') {
             steps {
-                sh 'docker run -v /var/run/docker.sock:/var/run/docker.sock'
-                sh 'docker image build -t $DOCKER_HUB_REPO:latest .'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/eilonash92/facts-service'
+                sh 'sleep 600'
+                sh 'docker build -t $DOCKER_HUB_REPO:latest .'
                 //script {
                 //    def newImage = docker.build "${DOCKER_HUB_REPO}:${env.BUILD_TAG}"
                 //    newImage.push()
