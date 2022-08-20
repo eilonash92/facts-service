@@ -56,8 +56,9 @@ spec:
     stage('Deploy') {
         steps {
             container('helm') {
-            sh """helm upgrade --install facts-service ./helm"""
-            echo "Deployed $CONTAINER_NAME succesfully to kubernetes"
+                sh """helm upgrade --install facts-service ./helm"""
+                echo "Deployed $CONTAINER_NAME succesfully to kubernetes"
+            }
         }
     }
   }
